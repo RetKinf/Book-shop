@@ -43,7 +43,7 @@ public class BookRepositoryImpl implements BookRepository {
         try (Session session = sessionFactory.openSession()) {
             return session.createQuery("SELECT b FROM Book b").getResultList();
         } catch (Exception e) {
-            throw new DataProcessingException("Can't get all users", e);
+            throw new DataProcessingException("Can't get all books", e);
         }
     }
 
@@ -52,7 +52,7 @@ public class BookRepositoryImpl implements BookRepository {
         try (Session session = sessionFactory.openSession()) {
             return Optional.ofNullable(session.get(Book.class, id));
         } catch (Exception e) {
-            throw new DataProcessingException("Can't get user by id " + id, e);
+            throw new DataProcessingException("Can't get book by id " + id, e);
         }
     }
 }
