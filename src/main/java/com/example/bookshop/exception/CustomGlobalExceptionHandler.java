@@ -27,19 +27,18 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
     ) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
-        body.put("status", HttpStatus.BAD_REQUEST);
         List<String> errors = ex.getBindingResult()
                 .getAllErrors()
                 .stream()
                 .map(this::getErrorMessage)
                 .toList();
         body.put("errors", errors);
-        return new ResponseEntity<>(body, headers, status);
+        return new ResponseEntity<>(body, headers, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<String> handleNullPointerExceptions(EntityNotFoundException ex) {
-        return new ResponseEntity<>("Book not found", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Entity not found", HttpStatus.NOT_FOUND);
     }
 
     private String getErrorMessage(ObjectError e) {
