@@ -3,6 +3,7 @@ package com.example.bookshop.controller;
 import com.example.bookshop.dto.book.BookDto;
 import com.example.bookshop.dto.book.CreateBookRequestDto;
 import com.example.bookshop.service.BookService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -23,21 +24,28 @@ public class BookController {
     private final BookService bookService;
 
     @GetMapping
+    @Operation(summary = "Find all books")
     public List<BookDto> findAll(Pageable pageable) {
         return bookService.findAll(pageable);
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Find a book by ID")
     public BookDto findById(@PathVariable long id) {
         return bookService.findById(id);
     }
 
     @PostMapping
+    @Operation(summary = "Add a new book")
     public BookDto save(@RequestBody @Valid CreateBookRequestDto requestDto) {
         return bookService.save(requestDto);
     }
 
     @PutMapping("{id}")
+    @Operation(
+            summary = "Update a book",
+            description = "Change information about an existing book"
+    )
     public BookDto update(
             @PathVariable long id,
             @RequestBody @Valid CreateBookRequestDto requestDto
@@ -46,6 +54,7 @@ public class BookController {
     }
 
     @DeleteMapping("{id}")
+    @Operation(summary = "Delete a book")
     public void delete(@PathVariable long id) {
         bookService.deleteById(id);
     }
