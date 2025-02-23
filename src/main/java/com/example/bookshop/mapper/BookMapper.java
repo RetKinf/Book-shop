@@ -1,9 +1,9 @@
 package com.example.bookshop.mapper;
 
 import com.example.bookshop.config.MapperConfig;
+import com.example.bookshop.dto.book.BookDto;
+import com.example.bookshop.dto.book.CreateBookRequestDto;
 import com.example.bookshop.model.Book;
-import com.example.bookshop.model.dto.BookDto;
-import com.example.bookshop.model.dto.CreateBookRequestDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 

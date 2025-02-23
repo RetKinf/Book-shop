@@ -41,6 +41,11 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         return new ResponseEntity<>("Entity not found", HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(RegistrationException.class)
+    public ResponseEntity<String> handleNullPointerExceptions(RuntimeException ex) {
+        return new ResponseEntity<>(("Can't register"), HttpStatus.CONFLICT);
+    }
+
     private String getErrorMessage(ObjectError e) {
         if (e instanceof FieldError fieldError) {
             String field = fieldError.getField();
