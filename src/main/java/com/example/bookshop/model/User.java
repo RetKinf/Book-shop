@@ -25,9 +25,9 @@ public class User {
     private String email;
     @Column(nullable = false)
     private String password;
-    @Column(unique = true)
+    @Column(nullable = false)
     private String firstName;
-    @Column(unique = true)
+    @Column(nullable = false)
     private String lastName;
     private String shippingAddress;
     @Column(nullable = false)

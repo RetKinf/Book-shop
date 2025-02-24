@@ -42,7 +42,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
     }
 
     @ExceptionHandler(RegistrationException.class)
-    public ResponseEntity<String> handleNullPointerExceptions(RuntimeException ex) {
+    public ResponseEntity<String> handleRegistrationException(RuntimeException ex) {
         return new ResponseEntity<>((ex.getMessage()), HttpStatus.CONFLICT);
     }
 
