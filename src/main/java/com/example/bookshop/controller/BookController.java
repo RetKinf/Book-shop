@@ -31,21 +31,21 @@ public class BookController {
         return bookService.findAll(pageable);
     }
 
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/{id}")
     @Operation(summary = "Find a book by ID")
     public BookDto findById(@PathVariable long id) {
         return bookService.findById(id);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     @Operation(summary = "Add a new book")
     public BookDto save(@RequestBody @Valid CreateBookRequestDto requestDto) {
         return bookService.save(requestDto);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("{id}")
     @Operation(
             summary = "Update a book",
@@ -58,7 +58,7 @@ public class BookController {
         return bookService.update(requestDto, id);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("{id}")
     @Operation(summary = "Delete a book")
     public void delete(@PathVariable long id) {
