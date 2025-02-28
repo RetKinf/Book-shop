@@ -41,7 +41,7 @@ public class Book {
     private BigDecimal price;
     private String description;
     private String coverImage;
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
     @JoinTable(
             name = "books_categories",
             joinColumns = @JoinColumn(name = "book_id"),
