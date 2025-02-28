@@ -25,7 +25,6 @@ public class Category {
     private Long id;
     @Column(nullable = false, length = 50)
     private String name;
-    @Column(length = 255)
     private String description;
     private boolean isDeleted = false;
 
