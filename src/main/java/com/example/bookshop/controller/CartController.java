@@ -26,14 +26,14 @@ public class CartController {
 
     @PreAuthorize("hasAuthority('USER')")
     @GetMapping
-    @Operation(summary = "Get all the books from shopping cart")
+    @Operation(summary = "Get all books from the shopping cart")
     public ShoppingCartDto findAll(Pageable pageable) {
         return cartService.findAll(pageable);
     }
 
     @PreAuthorize("hasAuthority('USER')")
     @PostMapping
-    @Operation(summary = "Add to the shopping cart")
+    @Operation(summary = "Add a book to the shopping cart")
     public ShoppingCartDto save(
             @RequestBody @Valid CreateCartItemDto requestDto
     ) {
@@ -43,8 +43,8 @@ public class CartController {
     @PreAuthorize("hasAuthority('USER')")
     @PutMapping("/items/{id}")
     @Operation(
-            summary = "Changed quantity by ID",
-            description = "Changed books quantity in cart item by ID"
+            summary = "Update the quantity",
+            description = "Update the quantity of a book in the cart item by its ID"
     )
     public ShoppingCartDto update(
             @RequestBody @Valid CartItemRequestDto requestDto,
@@ -55,7 +55,7 @@ public class CartController {
 
     @PreAuthorize("hasAuthority('USER')")
     @DeleteMapping("/items/{id}")
-    @Operation(summary = "Delete item cart by ID")
+    @Operation(summary = "Delete a cart item by ID")
     public ShoppingCartDto delete(@PathVariable Long id) {
         return cartService.delete(id);
     }
