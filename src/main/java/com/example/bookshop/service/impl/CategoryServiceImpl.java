@@ -12,6 +12,7 @@ import com.example.bookshop.repository.CategoryRepository;
 import com.example.bookshop.service.CategoryService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -31,8 +32,8 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<CategoryDto> getAll() {
-        return categoryRepository.findAll()
+    public List<CategoryDto> getAll(Pageable pageable) {
+        return categoryRepository.findAll(pageable)
                 .stream()
                 .map(categoryMapper::toDto)
                 .toList();
@@ -63,8 +64,8 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<BookWithoutCategoriesDto> findBooksByCategoryId(Long id) {
-        return bookRepository.findAllByCategories_Id(id)
+    public List<BookWithoutCategoriesDto> findBooksByCategoryId(Long id, Pageable pageable) {
+        return bookRepository.findAllByCategoriesId(id, pageable)
                 .stream()
                 .map(bookMapper::toBookWithoutCategoriesDto)
                 .toList();
