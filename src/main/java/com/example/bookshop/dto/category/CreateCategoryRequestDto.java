@@ -9,8 +9,8 @@ import lombok.Setter;
 @Getter
 public class CreateCategoryRequestDto {
     @NotBlank
-    @Size(min = 2, max = 50, message = "Description must be between 2 and 255 characters")
+    @Size(min = 2, max = 50, message = "Name must be between 2 and 255 characters")
     private String name;
-    @Size(min = 10)
+    @Size(min = 10, message = "Description must have at least 10 characters")
     private String description;
 }
