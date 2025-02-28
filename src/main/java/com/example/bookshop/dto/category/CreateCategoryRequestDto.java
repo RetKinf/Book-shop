@@ -11,6 +11,6 @@ public class CreateCategoryRequestDto {
     @NotBlank
     @Size(min = 2, max = 50, message = "Description must be between 2 and 255 characters")
     private String name;
-    @Size(max = 255)
+    @Size(min = 10)
     private String description;
 }
