@@ -27,14 +27,14 @@ public class OrderController {
 
     @PreAuthorize("hasAuthority('USER')")
     @GetMapping
-    @Operation(summary = "Get all orders")
+    @Operation(summary = "Get all orders for the current user")
     public List<OrderDto> findAll(Authentication authentication) {
         return orderService.findAllOrders(authentication);
     }
 
     @PreAuthorize("hasAuthority('USER')")
     @PostMapping
-    @Operation(summary = "Buy books from shipping cart")
+    @Operation(summary = "Create a new order from the shopping cart")
     public OrderDto buy(
             @Valid CreateOrderRequestDto createOrderRequestDto,
             Authentication authentication
@@ -44,7 +44,7 @@ public class OrderController {
 
     @PreAuthorize("hasAuthority('USER')")
     @GetMapping("/{orderId}/items")
-    @Operation
+    @Operation(summary = "Get all items for a specific order")
     public List<OrderItemDto> findAllItem(
             @PathVariable Long orderId,
             Authentication authentication
@@ -54,7 +54,7 @@ public class OrderController {
 
     @PreAuthorize("hasAuthority('USER')")
     @GetMapping("/{orderId}/items/{id}")
-    @Operation
+    @Operation(summary = "Get a specific item from a specific order")
     public OrderItemDto findItemById(
             @PathVariable Long orderId,
             @PathVariable Long id,
@@ -65,7 +65,7 @@ public class OrderController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PatchMapping("/{id}")
-    @Operation
+    @Operation(summary = "Update the status of an order by its ID")
     public OrderDto patchById(
             @PathVariable Long id,
             @RequestBody @Valid OrderRequestDto orderRequestDto
