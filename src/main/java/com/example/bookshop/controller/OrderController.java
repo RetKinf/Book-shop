@@ -36,7 +36,7 @@ public class OrderController {
     @PostMapping
     @Operation(summary = "Create a new order from the shopping cart")
     public OrderDto buy(
-            @Valid CreateOrderRequestDto createOrderRequestDto,
+            @RequestBody @Valid CreateOrderRequestDto createOrderRequestDto,
             Authentication authentication
     ) {
         return orderService.buy(createOrderRequestDto, authentication);
