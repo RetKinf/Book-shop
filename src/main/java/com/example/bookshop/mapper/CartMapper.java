@@ -20,6 +20,7 @@ public interface CartMapper {
             source = "cartItems",
             qualifiedByName = "mapCartItems"
     )
+    @Mapping(target = "id", source = "id")
     ShoppingCartDto toDto(ShoppingCart shoppingCart);
 
     @Mapping(target = "bookId", source = "book.id")

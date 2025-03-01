@@ -7,8 +7,9 @@ import com.example.bookshop.service.CartService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -27,17 +29,18 @@ public class CartController {
     @PreAuthorize("hasAuthority('USER')")
     @GetMapping
     @Operation(summary = "Get all books from the shopping cart")
-    public ShoppingCartDto findAll(Pageable pageable) {
-        return cartService.findAll(pageable);
+    public ShoppingCartDto findAll(Authentication authentication) {
+        return cartService.findAll(authentication);
     }
 
     @PreAuthorize("hasAuthority('USER')")
     @PostMapping
     @Operation(summary = "Add a book to the shopping cart")
     public ShoppingCartDto save(
-            @RequestBody @Valid CreateCartItemDto requestDto
+            @RequestBody @Valid CreateCartItemDto requestDto,
+            Authentication authentication
     ) {
-        return cartService.save(requestDto);
+        return cartService.save(requestDto, authentication);
     }
 
     @PreAuthorize("hasAuthority('USER')")
@@ -48,15 +51,17 @@ public class CartController {
     )
     public ShoppingCartDto update(
             @RequestBody @Valid CartItemRequestDto requestDto,
-            @PathVariable Long id
+            @PathVariable Long id,
+            Authentication authentication
     ) {
-        return cartService.update(requestDto, id);
+        return cartService.update(requestDto, id, authentication);
     }
 
     @PreAuthorize("hasAuthority('USER')")
     @DeleteMapping("/items/{id}")
     @Operation(summary = "Delete a cart item by ID")
-    public ShoppingCartDto delete(@PathVariable Long id) {
-        return cartService.delete(id);
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ShoppingCartDto delete(@PathVariable Long id, Authentication authentication) {
+        return cartService.delete(id, authentication);
     }
 }
