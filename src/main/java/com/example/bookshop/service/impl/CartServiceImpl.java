@@ -1,6 +1,7 @@
 package com.example.bookshop.service.impl;
 
 import com.example.bookshop.dto.cart.CartItemRequestDto;
+import com.example.bookshop.dto.cart.CartItemResponseDto;
 import com.example.bookshop.dto.cart.CreateCartItemDto;
 import com.example.bookshop.dto.cart.ShoppingCartDto;
 import com.example.bookshop.exception.EntityNotFoundException;
@@ -60,6 +61,7 @@ public class CartServiceImpl implements CartService {
             CartItem cartItem = cartMapper.toModel(requestDto);
             cartItem.setShoppingCart(shoppingCart);
             cartItem.setBook(book);
+            cartItem.setShoppingCart(shoppingCart);
             shoppingCart.addItem(cartItem);
         }
         shoppingCartRepository.save(shoppingCart);
@@ -67,45 +69,36 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public ShoppingCartDto update(
+    public CartItemResponseDto update(
             CartItemRequestDto requestDto,
             Long id,
             Authentication authentication
     ) {
-        ShoppingCart shoppingCart = shoppingCartRepository.findByUser(
-                (User) authentication.getPrincipal()
-        );
-        Optional<CartItem> optionalItem = shoppingCart.getCartItems().stream()
-                .filter(item -> item.getBook().getId().equals(id))
-                .findFirst();
-        CartItem cartItem = optionalItem.orElseThrow(
+        User user = (User) authentication.getPrincipal();
+        CartItem cartItem = shoppingCartRepository.cartItemsByUserAndBookId(
+                user, id
+        ).orElseThrow(
                 () -> new EntityNotFoundException(
                         "Item with id " + id + " not found"
                 )
         );
         cartItem.setQuantity(requestDto.quantity());
-        shoppingCartRepository.save(shoppingCart);
-        return cartMapper.toDto(shoppingCart);
+        cartItemRepository.save(cartItem);
+        return cartMapper.toDto(cartItem);
     }
 
     @Override
-    public ShoppingCartDto delete(Long id, Authentication authentication) {
-        ShoppingCart shoppingCart = shoppingCartRepository.findByUser(
-                (User) authentication.getPrincipal()
-        );
-        Optional<CartItem> cartItem = shoppingCart.getCartItems().stream()
-                .filter(item -> item.getBook().getId().equals(id))
-                .findFirst();
+    public void delete(Long id, Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        Optional<CartItem> cartItem = shoppingCartRepository.cartItemsByUserAndBookId(user, id);
         if (cartItem.isPresent()) {
             CartItem item = cartItem.get();
-            shoppingCart.getCartItems().remove(item);
-            shoppingCartRepository.save(shoppingCart);
+            cartItemRepository.delete(item);
         } else {
             throw new EntityNotFoundException(
                     "Item with id " + id + " not found"
             );
         }
-        return cartMapper.toDto(shoppingCart);
     }
 
     @Override

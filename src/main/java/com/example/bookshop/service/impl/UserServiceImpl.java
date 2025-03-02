@@ -44,9 +44,9 @@ public class UserServiceImpl implements UserService {
                         String.format("Role %s Not Found", RoleName.USER)
                 ));
         user.setRoles(Set.of(role));
-        userRepository.save(user);
-        cartService.createShoppingCart(user);
-        return userMapper.toDto(user);
+        User saveUser = userRepository.save(user);
+        cartService.createShoppingCart(saveUser);
+        return userMapper.toDto(saveUser);
     }
 
     public boolean isExist(String email) {

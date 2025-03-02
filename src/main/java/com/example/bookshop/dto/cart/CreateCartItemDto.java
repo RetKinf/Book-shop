@@ -7,7 +7,6 @@ public record CreateCartItemDto(
         @NotNull
         @Positive
         Long bookId,
-        @NotNull
         @Positive
         int quantity
 ) {

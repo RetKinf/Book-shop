@@ -1,6 +1,7 @@
 package com.example.bookshop.controller;
 
 import com.example.bookshop.dto.cart.CartItemRequestDto;
+import com.example.bookshop.dto.cart.CartItemResponseDto;
 import com.example.bookshop.dto.cart.CreateCartItemDto;
 import com.example.bookshop.dto.cart.ShoppingCartDto;
 import com.example.bookshop.service.CartService;
@@ -49,7 +50,7 @@ public class CartController {
             summary = "Update the quantity",
             description = "Update the quantity of a book in the cart item by its ID"
     )
-    public ShoppingCartDto update(
+    public CartItemResponseDto update(
             @RequestBody @Valid CartItemRequestDto requestDto,
             @PathVariable Long id,
             Authentication authentication
@@ -61,7 +62,7 @@ public class CartController {
     @DeleteMapping("/items/{id}")
     @Operation(summary = "Delete a cart item by ID")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ShoppingCartDto delete(@PathVariable Long id, Authentication authentication) {
-        return cartService.delete(id, authentication);
+    public void delete(@PathVariable Long id, Authentication authentication) {
+        cartService.delete(id, authentication);
     }
 }
