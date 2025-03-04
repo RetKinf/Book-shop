@@ -50,7 +50,10 @@ public class OrderServiceImpl implements OrderService {
         User user = (User) authentication.getPrincipal();
         ShoppingCart shoppingCart = shoppingCartRepository.findByUser(user);
         if (shoppingCart.getCartItems().isEmpty()) {
-            throw new OrderProcessingException("ShoppingCart is empty");
+            throw new OrderProcessingException(
+                    "ShoppingCart with id "
+                            + shoppingCart.getId()
+                            + " is empty");
         }
         Order order = convertCartToOrder(shoppingCart);
         order.setUser(user);
