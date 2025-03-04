@@ -10,6 +10,7 @@ import com.example.bookshop.model.RoleName;
 import com.example.bookshop.model.User;
 import com.example.bookshop.repository.RoleRepository;
 import com.example.bookshop.repository.UserRepository;
+import com.example.bookshop.service.CartService;
 import com.example.bookshop.service.UserService;
 import jakarta.transaction.Transactional;
 import java.util.Set;
@@ -24,6 +25,7 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final CartService cartService;
 
     @Transactional
     @Override
@@ -42,7 +44,9 @@ public class UserServiceImpl implements UserService {
                         String.format("Role %s Not Found", RoleName.USER)
                 ));
         user.setRoles(Set.of(role));
-        return userMapper.toDto(userRepository.save(user));
+        User saveUser = userRepository.save(user);
+        cartService.createShoppingCart(saveUser);
+        return userMapper.toDto(saveUser);
     }
 
     public boolean isExist(String email) {
