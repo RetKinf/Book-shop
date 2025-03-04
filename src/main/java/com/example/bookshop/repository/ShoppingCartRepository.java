@@ -12,11 +12,11 @@ public interface ShoppingCartRepository extends JpaRepository<ShoppingCart, Long
     @EntityGraph(attributePaths = {"cartItems", "cartItems.book"})
     ShoppingCart findByUser(User user);
 
-    @Query("SELECT ci FROM CartItem ci " +
-            "JOIN FETCH ci.book b " +
-            "JOIN ci.shoppingCart sc " +
-            "JOIN sc.user u " +
-            "WHERE u = :user AND ci.book.id = :bookId"
+    @Query("SELECT ci FROM CartItem ci "
+            + "JOIN FETCH ci.book b "
+            + "JOIN ci.shoppingCart sc "
+            + "JOIN sc.user u "
+            + "WHERE u = :user AND ci.book.id = :bookId"
     )
     Optional<CartItem> cartItemsByUserAndBookId(User user, Long id);
 }
