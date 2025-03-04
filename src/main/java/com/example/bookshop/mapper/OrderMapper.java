@@ -26,4 +26,7 @@ public interface OrderMapper {
                 .map(this::toDto)
                 .toList();
     }
+
+    @Mapping(target = "bookId", source = "book.id")
+    List<OrderItemDto> toOrderItemDtoList(Set<OrderItem> orderItems);
 }

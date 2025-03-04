@@ -4,8 +4,8 @@ import com.example.bookshop.dto.order.CreateOrderRequestDto;
 import com.example.bookshop.dto.order.OrderDto;
 import com.example.bookshop.dto.order.OrderItemDto;
 import com.example.bookshop.dto.order.OrderRequestDto;
-import com.example.bookshop.exception.CartIsEmptyException;
 import com.example.bookshop.exception.EntityNotFoundException;
+import com.example.bookshop.exception.OrderProcessingException;
 import com.example.bookshop.mapper.OrderMapper;
 import com.example.bookshop.model.CartItem;
 import com.example.bookshop.model.Order;
@@ -50,7 +50,7 @@ public class OrderServiceImpl implements OrderService {
         User user = (User) authentication.getPrincipal();
         ShoppingCart shoppingCart = shoppingCartRepository.findByUser(user);
         if (shoppingCart.getCartItems().isEmpty()) {
-            throw new CartIsEmptyException("ShoppingCart is empty");
+            throw new OrderProcessingException("ShoppingCart is empty");
         }
         Order order = convertCartToOrder(shoppingCart);
         order.setUser(user);
@@ -67,11 +67,10 @@ public class OrderServiceImpl implements OrderService {
             Long orderId, Authentication authentication
     ) {
         User user = (User) authentication.getPrincipal();
-        List<OrderItem> items = orderRepository.findItemsByUserAndId(user, orderId);
-        if (items.isEmpty()) {
-            throw new EntityNotFoundException("Order Items not found");
-        }
-        return items.stream().map(orderMapper::toDto).collect(Collectors.toList());
+        Order order = orderRepository.findByIdAndUser(user.getId(), orderId).orElseThrow(
+                () -> new EntityNotFoundException("Order with id " + orderId + " not found")
+        );
+        return orderMapper.toOrderItemDtoList(order.getOrderItems());
     }
 
     @Override

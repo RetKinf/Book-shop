@@ -3,7 +3,6 @@ package com.example.bookshop.repository;
 import com.example.bookshop.model.Order;
 import com.example.bookshop.model.OrderItem;
 import com.example.bookshop.model.User;
-import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,10 +15,12 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query(
             "SELECT o "
                     + "FROM Order o "
-                    + "JOIN FETCH o.orderItems "
-                    + "WHERE o.id = :orderId AND o.user = :user"
+                    + "WHERE o.id = :orderId AND o.user.id = :userId"
     )
-    List<OrderItem> findItemsByUserAndId(@Param("user") User user, @Param("orderId") Long orderId);
+    Optional<Order> findByIdAndUser(
+            @Param("userId") Long userId,
+            @Param("orderId") Long orderId
+    );
 
     @Query(
             "SELECT o "
