@@ -51,7 +51,7 @@ public class OrderServiceImpl implements OrderService {
         ShoppingCart shoppingCart = shoppingCartRepository.findByUser(user);
         if (shoppingCart.getCartItems().isEmpty()) {
             throw new OrderProcessingException(
-                    "ShoppingCart with id "
+                    "Shopping cart with id "
                             + shoppingCart.getId()
                             + " is empty");
         }
@@ -85,7 +85,7 @@ public class OrderServiceImpl implements OrderService {
         User user = (User) authentication.getPrincipal();
         OrderItem orderItem = orderRepository.findItemByUserAndId(user, id, orderId)
                 .orElseThrow(
-                        () -> new EntityNotFoundException("OrderItem with id " + id + " not found")
+                        () -> new EntityNotFoundException("Order item with id " + id + " not found")
                 );
         return orderMapper.toDto(orderItem);
     }
