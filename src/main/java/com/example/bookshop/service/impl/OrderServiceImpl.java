@@ -4,20 +4,24 @@ import com.example.bookshop.dto.order.CreateOrderRequestDto;
 import com.example.bookshop.dto.order.OrderDto;
 import com.example.bookshop.dto.order.OrderItemDto;
 import com.example.bookshop.dto.order.OrderRequestDto;
+import com.example.bookshop.exception.CartIsEmptyException;
 import com.example.bookshop.exception.EntityNotFoundException;
 import com.example.bookshop.mapper.OrderMapper;
+import com.example.bookshop.model.CartItem;
 import com.example.bookshop.model.Order;
 import com.example.bookshop.model.OrderItem;
-import com.example.bookshop.model.OrderStatus;
 import com.example.bookshop.model.ShoppingCart;
 import com.example.bookshop.model.User;
 import com.example.bookshop.repository.OrderRepository;
 import com.example.bookshop.repository.ShoppingCartRepository;
 import com.example.bookshop.service.OrderService;
 import jakarta.transaction.Transactional;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -30,27 +34,27 @@ public class OrderServiceImpl implements OrderService {
     private final OrderMapper orderMapper;
 
     @Override
-    public List<OrderDto> findAllOrders(Authentication authentication) {
-        return orderRepository.findByUser((User) authentication.getPrincipal())
+    public List<OrderDto> findAllOrders(Authentication authentication, Pageable pageable) {
+        User user = (User) authentication.getPrincipal();
+        return orderRepository.findAllByUser(user, pageable)
                 .stream()
                 .map(orderMapper::toDto)
                 .toList();
     }
 
     @Override
-    public OrderDto buy(
+    public OrderDto createOrder(
             CreateOrderRequestDto createOrderRequestDto,
             Authentication authentication
     ) {
-        Order order = new Order();
         User user = (User) authentication.getPrincipal();
         ShoppingCart shoppingCart = shoppingCartRepository.findByUser(user);
         if (shoppingCart.getCartItems().isEmpty()) {
-            throw new IllegalStateException("ShoppingCart is empty");
+            throw new CartIsEmptyException("ShoppingCart is empty");
         }
+        Order order = convertCartToOrder(shoppingCart);
         order.setUser(user);
-        order.convertFromCart(shoppingCart);
-        order.setOrderDate(LocalDateTime.now().plusDays(3));
+        order.setOrderDate(LocalDateTime.now());
         order.setShippingAddress(createOrderRequestDto.shippingAddress());
         orderRepository.save(order);
         shoppingCart.getCartItems().clear();
@@ -63,16 +67,11 @@ public class OrderServiceImpl implements OrderService {
             Long orderId, Authentication authentication
     ) {
         User user = (User) authentication.getPrincipal();
-        return orderRepository.findByUser(user).stream()
-                .filter(order -> order.getId().equals(order.getId()))
-                .findFirst()
-                .orElseThrow(
-                        () -> new EntityNotFoundException("Order with id " + orderId + " not found")
-                )
-                .getOrderItems()
-                .stream()
-                .map(orderMapper::toDto)
-                .toList();
+        List<OrderItem> items = orderRepository.findItemsByUserAndId(user, orderId);
+        if (items.isEmpty()) {
+            throw new EntityNotFoundException("Order Items not found");
+        }
+        return items.stream().map(orderMapper::toDto).collect(Collectors.toList());
     }
 
     @Override
@@ -82,16 +81,7 @@ public class OrderServiceImpl implements OrderService {
             Authentication authentication
     ) {
         User user = (User) authentication.getPrincipal();
-        OrderItem orderItem = orderRepository.findByUser(user).stream()
-                .filter(order -> order.getId().equals(order.getId()))
-                .findFirst()
-                .orElseThrow(
-                        () -> new EntityNotFoundException("Order with id " + orderId + " not found")
-                )
-                .getOrderItems()
-                .stream()
-                .filter(item -> item.getId().equals(id))
-                .findFirst()
+        OrderItem orderItem = orderRepository.findItemByUserAndId(user, id, orderId)
                 .orElseThrow(
                         () -> new EntityNotFoundException("OrderItem with id " + id + " not found")
                 );
@@ -99,27 +89,35 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDto patchById(
+    public OrderDto patchOrderStatusById(
             OrderRequestDto orderRequestDto,
             Long id
     ) {
-        Order currentOrder = orderRepository.findAll().stream()
-                .filter(order -> order.getId().equals(id))
-                .findFirst()
-                .orElseThrow(
+        Order order = orderRepository.findById(id).orElseThrow(
                         () -> new EntityNotFoundException("Order with id " + id + " not found")
                 );
-        try {
-            OrderStatus orderStatus = OrderStatus.valueOf(orderRequestDto.status().toUpperCase());
-            currentOrder.setStatus(orderStatus);
-        } catch (IllegalArgumentException e) {
-            throw new EntityNotFoundException(
-                    "Order status with name "
-                            + orderRequestDto.status()
-                            + " not found"
-            );
-        }
-        orderRepository.save(currentOrder);
-        return orderMapper.toDto(currentOrder);
+        order.setStatus(orderRequestDto.status());
+        orderRepository.save(order);
+        return orderMapper.toDto(order);
+    }
+
+    private Order convertCartToOrder(ShoppingCart shoppingCart) {
+        Order order = new Order();
+        order.setOrderItems(shoppingCart.getCartItems().stream()
+                .map(item -> convertItemCartToOrderCart(item, order))
+                .collect(Collectors.toSet()));
+        order.setTotal(order.getOrderItems().stream()
+                .map(item -> item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add));
+        return order;
+    }
+
+    private OrderItem convertItemCartToOrderCart(CartItem cartItem, Order order) {
+        OrderItem orderItem = new OrderItem();
+        orderItem.setBook(cartItem.getBook());
+        orderItem.setQuantity(cartItem.getQuantity());
+        orderItem.setPrice(orderItem.getBook().getPrice());
+        orderItem.setOrder(order);
+        return orderItem;
     }
 }

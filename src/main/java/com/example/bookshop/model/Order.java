@@ -16,7 +16,6 @@ import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
@@ -48,13 +47,4 @@ public class Order {
     private Set<OrderItem> orderItems;
     @Column(nullable = false)
     private boolean isDeleted = false;
-
-    public void convertFromCart(ShoppingCart shoppingCart) {
-        this.orderItems = shoppingCart.getCartItems().stream()
-                .map(item -> new OrderItem().convertFromCart(item, this))
-                .collect(Collectors.toSet());
-        this.total = this.orderItems.stream()
-                .map(item -> item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
 }

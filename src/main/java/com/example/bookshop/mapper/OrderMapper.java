@@ -7,7 +7,6 @@ import com.example.bookshop.model.Order;
 import com.example.bookshop.model.OrderItem;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -23,6 +22,8 @@ public interface OrderMapper {
 
     @Named("mapOrderItems")
     default List<OrderItemDto> toDto(Set<OrderItem> orderItems) {
-        return orderItems.stream().map(this::toDto).collect(Collectors.toList());
+        return orderItems.stream()
+                .map(this::toDto)
+                .toList();
     }
 }

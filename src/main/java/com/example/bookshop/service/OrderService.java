@@ -5,12 +5,16 @@ import com.example.bookshop.dto.order.OrderDto;
 import com.example.bookshop.dto.order.OrderItemDto;
 import com.example.bookshop.dto.order.OrderRequestDto;
 import java.util.List;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 
 public interface OrderService {
-    List<OrderDto> findAllOrders(Authentication authentication);
+    List<OrderDto> findAllOrders(
+            Authentication authentication,
+            Pageable pageable
+    );
 
-    OrderDto buy(
+    OrderDto createOrder(
             CreateOrderRequestDto createOrderRequestDto,
             Authentication authentication
     );
@@ -26,7 +30,7 @@ public interface OrderService {
             Authentication authentication
     );
 
-    OrderDto patchById(
+    OrderDto patchOrderStatusById(
             OrderRequestDto orderRequestDto,
             Long id
     );

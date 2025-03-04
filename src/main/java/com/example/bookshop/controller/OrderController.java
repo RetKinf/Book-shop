@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,18 +29,18 @@ public class OrderController {
     @PreAuthorize("hasAuthority('USER')")
     @GetMapping
     @Operation(summary = "Get all orders for the current user")
-    public List<OrderDto> findAll(Authentication authentication) {
-        return orderService.findAllOrders(authentication);
+    public List<OrderDto> findAll(Authentication authentication, Pageable pageable) {
+        return orderService.findAllOrders(authentication, pageable);
     }
 
     @PreAuthorize("hasAuthority('USER')")
     @PostMapping
     @Operation(summary = "Create a new order from the shopping cart")
-    public OrderDto buy(
+    public OrderDto createOrder(
             @RequestBody @Valid CreateOrderRequestDto createOrderRequestDto,
             Authentication authentication
     ) {
-        return orderService.buy(createOrderRequestDto, authentication);
+        return orderService.createOrder(createOrderRequestDto, authentication);
     }
 
     @PreAuthorize("hasAuthority('USER')")
@@ -66,10 +67,10 @@ public class OrderController {
     @PreAuthorize("hasAuthority('ADMIN')")
     @PatchMapping("/{id}")
     @Operation(summary = "Update the status of an order by its ID")
-    public OrderDto patchById(
+    public OrderDto patchOrderStatusById(
             @PathVariable Long id,
             @RequestBody @Valid OrderRequestDto orderRequestDto
     ) {
-        return orderService.patchById(orderRequestDto, id);
+        return orderService.patchOrderStatusById(orderRequestDto, id);
     }
 }

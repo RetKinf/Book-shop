@@ -46,6 +46,11 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         return new ResponseEntity<>((ex.getMessage()), HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(CartIsEmptyException.class)
+    public ResponseEntity<String> handleCartIsEmptyException(RuntimeException ex) {
+        return new ResponseEntity<>("Cart is empty", HttpStatus.NOT_FOUND);
+    }
+
     private String getErrorMessage(ObjectError e) {
         if (e instanceof FieldError fieldError) {
             String field = fieldError.getField();

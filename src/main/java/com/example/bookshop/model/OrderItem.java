@@ -37,13 +37,4 @@ public class OrderItem {
     private BigDecimal price;
     @Column(nullable = false)
     private boolean isDeleted = false;
-
-    public OrderItem convertFromCart(CartItem cartItem, Order order) {
-        OrderItem orderItem = new OrderItem();
-        orderItem.setBook(cartItem.getBook());
-        orderItem.setQuantity(cartItem.getQuantity());
-        orderItem.setPrice(orderItem.book.getPrice());
-        orderItem.setOrder(order);
-        return orderItem;
-    }
 }
