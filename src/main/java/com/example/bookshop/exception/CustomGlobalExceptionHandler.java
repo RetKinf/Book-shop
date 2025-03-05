@@ -43,7 +43,12 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 
     @ExceptionHandler(RegistrationException.class)
     public ResponseEntity<String> handleRegistrationException(RuntimeException ex) {
-        return new ResponseEntity<>((ex.getMessage()), HttpStatus.CONFLICT);
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(OrderProcessingException.class)
+    public ResponseEntity<String> handleCartIsEmptyException(RuntimeException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     private String getErrorMessage(ObjectError e) {
