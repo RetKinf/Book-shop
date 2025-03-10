@@ -59,7 +59,7 @@ public class CategoryServiceTest {
     }
 
     @Test
-    @DisplayName("aa")
+    @DisplayName("Verify findAll() methods works")
     public void findAll_ValidPageable_ReturnAllCategoriesDto() {
         Long categoryId = 1L;
         Category category = new Category();
@@ -82,7 +82,7 @@ public class CategoryServiceTest {
     }
 
     @Test
-    @DisplayName("a2")
+    @DisplayName("Verify findById() method works")
     public void findById_WithValidCategoryId_ReturnCategoryDto() {
         Long categoryId = 1L;
         Category category = new Category();
@@ -101,7 +101,10 @@ public class CategoryServiceTest {
     }
 
     @Test
-    @DisplayName("a3")
+    @DisplayName(
+            "Verify that an exception is thrown "
+            + "when trying to find a non-existent Category by the given ID"
+    )
     public void findById_WithNonExistingCategoryId_ThrowsException() {
         Long categoryId = 122L;
         when(categoryRepository.findById(categoryId)).thenReturn(Optional.empty());

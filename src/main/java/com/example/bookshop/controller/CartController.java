@@ -37,6 +37,7 @@ public class CartController {
     @PreAuthorize("hasAuthority('USER')")
     @PostMapping
     @Operation(summary = "Add a book to the shopping cart")
+    @ResponseStatus(HttpStatus.CREATED)
     public ShoppingCartDto save(
             @RequestBody @Valid CreateCartItemDto requestDto,
             Authentication authentication
