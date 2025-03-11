@@ -64,9 +64,9 @@ public class BookServiceTest {
         when(bookMapper.toDto(book)).thenReturn(expected);
         BookDto actual = bookService.save(requestDto);
         assertThat(actual).isEqualTo(expected);
-        verify(bookRepository, times(1)).save(book);
-        verify(bookMapper, times(1)).toModel(requestDto);
-        verify(bookMapper, times(1)).toDto(book);
+        verify(bookRepository).save(book);
+        verify(bookMapper).toModel(requestDto);
+        verify(bookMapper).toDto(book);
         verifyNoMoreInteractions(bookRepository, bookMapper);
     }
 
@@ -84,7 +84,7 @@ public class BookServiceTest {
         BookDto actual = bookService.findById(bookId);
         BookDto expected = bookMapper.toDto(book);
         assertThat(actual).isEqualTo(expected);
-        verify(bookRepository, times(1)).findById(bookId);
+        verify(bookRepository).findById(bookId);
         verify(bookMapper, times(2)).toDto(book);
         verifyNoMoreInteractions(bookRepository, bookMapper);
     }
@@ -104,7 +104,7 @@ public class BookServiceTest {
         String expected = "Can't find book by ID " + bookId;
         String actual = exception.getMessage();
         assertThat(actual).isEqualTo(expected);
-        verify(bookRepository, times(1)).findById(bookId);
+        verify(bookRepository).findById(bookId);
         verifyNoMoreInteractions(bookRepository);
     }
 
@@ -132,8 +132,8 @@ public class BookServiceTest {
         List<BookDto> booksDtos = bookService.findAll(pageable);
         assertThat(booksDtos).hasSize(1);
         assertThat(booksDtos.get(0)).isEqualTo(bookDto);
-        verify(bookRepository, times(1)).findAll(pageable);
-        verify(bookMapper, times(1)).toDto(book);
+        verify(bookRepository).findAll(pageable);
+        verify(bookMapper).toDto(book);
         verifyNoMoreInteractions(bookRepository, bookMapper);
     }
 }

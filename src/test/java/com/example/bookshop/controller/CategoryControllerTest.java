@@ -1,6 +1,7 @@
 package com.example.bookshop.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -17,7 +18,6 @@ import java.util.List;
 import javax.sql.DataSource;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -89,7 +89,7 @@ public class CategoryControllerTest {
         CategoryDto actual = objectMapper.readValue(
                 result.getResponse().getContentAsString(), CategoryDto.class
         );
-        Assertions.assertNotNull(actual);
+        assertNotNull(actual);
         assertThat(actual.getName()).isEqualTo(CATEGORY_NAME_1);
     }
 
@@ -114,7 +114,7 @@ public class CategoryControllerTest {
         CategoryDto[] actual = objectMapper.readValue(
                 result.getResponse().getContentAsByteArray(), CategoryDto[].class
         );
-        Assertions.assertNotNull(actual);
+        assertNotNull(actual);
         assertThat(expected.size()).isEqualTo(actual.length);
         assertThat(expected).isEqualTo(Arrays.asList(actual));
     }
@@ -130,6 +130,17 @@ public class CategoryControllerTest {
                         delete("/categories/{id}", 1L)
                 )
                 .andExpect(status().isNoContent())
+                .andReturn();
+    }
+
+    @WithMockUser(username = "user", authorities = {"USER"})
+    @Test
+    @DisplayName("Find category by invalid ID returns 404 Not Found")
+    void findCategoryById_InvalidId_ReturnsNotFoundStatus() throws Exception {
+        mockMvc.perform(
+                        get("/categories/{id}", 1L)
+                )
+                .andExpect(status().isNotFound())
                 .andReturn();
     }
 }

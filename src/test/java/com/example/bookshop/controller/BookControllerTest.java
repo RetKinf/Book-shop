@@ -1,6 +1,8 @@
 package com.example.bookshop.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -19,7 +21,6 @@ import java.util.Set;
 import javax.sql.DataSource;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -125,7 +126,7 @@ public class BookControllerTest {
         BookDto actual = objectMapper.readValue(
                 result.getResponse().getContentAsString(), BookDto.class
         );
-        Assertions.assertNotNull(actual);
+        assertNotNull(actual);
         assertThat(BOOK_TITLE_1).isEqualTo(actual.getTitle());
         assertThat(BOOK_AUTHOR_1).isEqualTo(actual.getAuthor());
         assertThat(BOOK_PRICE_1.stripTrailingZeros())
@@ -158,8 +159,8 @@ public class BookControllerTest {
         List<BookDto> actual = Arrays.stream(objectMapper.readValue(
                 result.getResponse().getContentAsByteArray(), BookDto[].class
         )).toList();
-        Assertions.assertNotNull(actual);
-        Assertions.assertEquals(2, actual.size());
+        assertNotNull(actual);
+        assertEquals(2, actual.size());
         assertThat(actual.get(0).getTitle()).isEqualTo(BOOK_TITLE_1);
         assertThat(actual.get(0).getAuthor()).isEqualTo(BOOK_AUTHOR_1);
         assertThat(actual.get(0).getIsbn()).isEqualTo(BOOK_ISBN_1);
@@ -181,10 +182,21 @@ public class BookControllerTest {
     }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @DisplayName("Delete book by ID")
     void deleteBookById_ValidBookId_ReturnsNoContentStatus() throws Exception {
-        MvcResult result = mockMvc.perform(
+        mockMvc.perform(
                         delete("/books/{id}", 1L)
                 )
                 .andExpect(status().isNoContent())
+                .andReturn();
+    }
+
+    @WithMockUser(username = "user", authorities = {"USER"})
+    @Test
+    @DisplayName("Find book by invalid ID returns 404 Not Found")
+    void findBookById_InvalidId_ReturnsNotFoundStatus() throws Exception {
+        mockMvc.perform(
+                        get("/books/{id}", 1L)
+                )
+                .andExpect(status().isNotFound())
                 .andReturn();
     }
 }

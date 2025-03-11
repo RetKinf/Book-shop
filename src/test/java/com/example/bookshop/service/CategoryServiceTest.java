@@ -2,7 +2,6 @@ package com.example.bookshop.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
@@ -52,9 +51,9 @@ public class CategoryServiceTest {
         Mockito.when(categoryMapper.toModel(requestDto)).thenReturn(category);
         CategoryDto savedBookDto = categoryService.save(requestDto);
         assertThat(savedBookDto).isEqualTo(categoryDto);
-        verify(categoryRepository, times(1)).save(category);
-        verify(categoryMapper, times(1)).toModel(requestDto);
-        verify(categoryMapper, times(1)).toDto(category);
+        verify(categoryRepository).save(category);
+        verify(categoryMapper).toModel(requestDto);
+        verify(categoryMapper).toDto(category);
         verifyNoMoreInteractions(categoryRepository, categoryMapper);
     }
 
@@ -76,8 +75,8 @@ public class CategoryServiceTest {
         List<CategoryDto> categoryDtos = categoryService.findAll(pageable);
         assertThat(categoryDtos).hasSize(1);
         assertThat(categoryDtos.get(0)).isEqualTo(categoryDto);
-        verify(categoryRepository, times(1)).findAll(pageable);
-        verify(categoryMapper, times(1)).toDto(category);
+        verify(categoryRepository).findAll(pageable);
+        verify(categoryMapper).toDto(category);
         verifyNoMoreInteractions(categoryRepository, categoryMapper);
     }
 
@@ -95,8 +94,8 @@ public class CategoryServiceTest {
         when(categoryMapper.toDto(category)).thenReturn(expected);
         CategoryDto actual = categoryService.findById(categoryId);
         assertThat(expected).isEqualTo(actual);
-        verify(categoryRepository, times(1)).findById(categoryId);
-        verify(categoryMapper, times(1)).toDto(category);
+        verify(categoryRepository).findById(categoryId);
+        verify(categoryMapper).toDto(category);
         verifyNoMoreInteractions(categoryRepository, categoryMapper);
     }
 
@@ -115,7 +114,7 @@ public class CategoryServiceTest {
         String expected = "Can't find category with id: " + categoryId;
         String actual = exception.getMessage();
         assertThat(actual).isEqualTo(expected);
-        verify(categoryRepository, times(1)).findById(categoryId);
+        verify(categoryRepository).findById(categoryId);
         verifyNoMoreInteractions(categoryRepository);
     }
 }
