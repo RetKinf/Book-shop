@@ -75,7 +75,7 @@ public class CartServiceImpl implements CartService {
             Authentication authentication
     ) {
         User user = (User) authentication.getPrincipal();
-        CartItem cartItem = shoppingCartRepository.cartItemsByUserAndBookId(
+        CartItem cartItem = shoppingCartRepository.cartItemsByUserAndItemId(
                 user, id
         ).orElseThrow(
                 () -> new EntityNotFoundException(
@@ -90,7 +90,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public void delete(Long id, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
-        Optional<CartItem> cartItem = shoppingCartRepository.cartItemsByUserAndBookId(user, id);
+        Optional<CartItem> cartItem = shoppingCartRepository.cartItemsByUserAndItemId(user, id);
         if (cartItem.isPresent()) {
             CartItem item = cartItem.get();
             cartItemRepository.delete(item);
