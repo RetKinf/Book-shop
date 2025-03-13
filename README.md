@@ -78,5 +78,5 @@ After launching the application, you can access the API via Swagger UI at the fo
 For convenient testing, I have created a Postman collection that you can import and use to test the API. The collection includes example requests for all available endpoints. Here is the link to the collection:  
 [https://www.postman.com/orbital-module-candidate-80082765/workspace/book-shop/request/34994240-60781fb3-2da4-463e-94b4-5e3daa9fbfd2?action=share&creator=34994240&ctx=documentation](https://www.postman.com/orbital-module-candidate-80082765/workspace/book-shop/request/34994240-60781fb3-2da4-463e-94b4-5e3daa9fbfd2?action=share&creator=34994240&ctx=documentation)
 
-Short demo:
-https://www.loom.com/share/32e83677dfca4b89be23ba6f0b1136e7?sid=f91830a1-0fca-42b6-92dd-c00876d0e80c
+Short demo:   
+[https://www.loom.com/share/32e83677dfca4b89be23ba6f0b1136e7?sid=f91830a1-0fca-42b6-92dd-c00876d0e80c](https://www.loom.com/share/32e83677dfca4b89be23ba6f0b1136e7?sid=f91830a1-0fca-42b6-92dd-c00876d0e80c)

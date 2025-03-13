@@ -1,0 +1,22 @@
+-------------------------------------------------------------------------------
+Test set: com.example.bookshop.service.BookServiceTest
+-------------------------------------------------------------------------------
+Tests run: 4, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.253 s <<< FAILURE! -- in com.example.bookshop.service.BookServiceTest
+com.example.bookshop.service.BookServiceTest.findById_WithValidBookId_ReturnBookDto -- Time elapsed: 0.016 s <<< FAILURE!
+org.mockito.exceptions.verification.TooManyActualInvocations: 
+
+bookMapper.toDto(
+    Book(id=1, title=Book title, author=Author, isbn=ISBN, price=10.99, description=null, coverImage=null, isDeleted=false)
+);
+Wanted 1 time:
+-> at com.example.bookshop.service.BookServiceTest.findById_WithValidBookId_ReturnBookDto(BookServiceTest.java:87)
+But was 2 times:
+-> at com.example.bookshop.service.impl.BookServiceImpl.findById(BookServiceImpl.java:54)
+-> at com.example.bookshop.service.BookServiceTest.findById_WithValidBookId_ReturnBookDto(BookServiceTest.java:84)
+
+
+	at com.example.bookshop.service.BookServiceTest.findById_WithValidBookId_ReturnBookDto(BookServiceTest.java:87)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+
