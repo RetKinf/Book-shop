@@ -1,11 +1,13 @@
 **Introduction**
 
-This project was created to test my skills in developing the backend for a bookstore. I’ve always wanted to build something from scratch, and this project became a great opportunity to apply my knowledge and skills in practice, as well as improve the quality of my code. In the application, users are divided into two roles: Admin and User.
+This project was created to test my skills in developing the backend for a bookstore. I’ve always wanted to build something from scratch, and this project became a great opportunity to apply my knowledge and skills in practice, as well as improve the quality of my code. In the application, users are divided into two roles: **Admin** and **User**.
 
-The Admin has the ability to create, delete, and update books and categories, as well as manage order statuses.
+The **Admin** has the ability to create, delete, and update books and categories, as well as manage order statuses.
 ![Admin.JPG](Admin.JPG)
-The User, on the other hand, can add books to the cart, change their quantity or remove them, and place orders after selecting products.
+
+The **User**, on the other hand, can add books to the cart, change their quantity or remove them, and place orders after selecting products.
 ![User.JPG](User.JPG)
+
 ---
 
 **Technologies and Tools**  
@@ -49,24 +51,35 @@ To run this project locally, follow these steps:
    cd book-shop
    ```
 
-3. **Install dependencies using Maven**:
+3. **Set up environment variables**:
+   - Create a `.env` file in the root directory of the project.
+   - Add the following environment variables to the `.env` file:
+     ```bash
+      MYSQLDB_ROOT_PASSWORD=
+      MYSQLDB_DATABASE=
+      MYSQLDB_USER=
+      MYSQLDB_PASSWORD=
+      MYSQLDB_LOCAL_PORT=
+      MYSQLDB_DOCKER_PORT=
+      SPRING_LOCAL_PORT=
+      SPRING_DOCKER_PORT=
+      DEBUG_PORT=
+     ```
+
+4. **Install dependencies using Maven**:
    ```bash
    mvn clean install
    ```
 
-4. **Configure the database**:
-    - Open the `application.properties` file.
-    - Specify the database connection parameters (e.g., URL, username, and password).
+5. **Run the application using Docker**:
+   - Ensure Docker is installed and running on your machine.
+   - Build and run the Docker container using the following command:
+     ```bash
+     docker-compose up --build
+     ```
 
-5. **Start Docker**:
-    - Ensure Docker is installed and running on your machine.
-
-6. **Run the application**:
-    - Use the `Shift + F10` shortcut (or run it through your IDE).
-    - Alternatively, execute the command:
-      ```bash
-      mvn spring-boot:run
-      ```
+6. **Access the application**:
+   - Once the container is running, the application will be accessible at `http://localhost:8080`.
 
 ---
 
