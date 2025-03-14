@@ -16,7 +16,7 @@ public interface ShoppingCartRepository extends JpaRepository<ShoppingCart, Long
             + "JOIN FETCH ci.book b "
             + "JOIN ci.shoppingCart sc "
             + "JOIN sc.user u "
-            + "WHERE u = :user AND ci.book.id = :bookId"
+            + "WHERE u = :user AND ci.id = :id"
     )
-    Optional<CartItem> cartItemsByUserAndBookId(User user, Long id);
+    Optional<CartItem> cartItemsByUserAndItemId(User user, Long id);
 }

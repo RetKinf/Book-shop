@@ -1,0 +1,7 @@
+com\example\bookshop\BookShopApplicationTests.class
+com\example\bookshop\controller\CategoryControllerTest.class
+com\example\bookshop\service\BookServiceTest.class
+com\example\bookshop\controller\BookControllerTest.class
+com\example\bookshop\service\CategoryServiceTest.class
+com\example\bookshop\repository\BookRepositoryTest.class
+com\example\bookshop\config\CustomMySqlContainer.class
