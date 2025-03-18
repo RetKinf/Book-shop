@@ -23,10 +23,11 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     );
 
     @Query(
-            "SELECT o "
-                    + "FROM Order o "
-                    + "JOIN FETCH o.orderItems oi "
-                    + "WHERE oi.id = :itemId AND o.user = :user AND o.id = :orderId"
+            "SELECT oi "
+                    + "FROM OrderItem oi "
+                    + "JOIN oi.order o "
+                    + "JOIN o.user u "
+                    + "WHERE oi.id = :itemId AND u = :user AND o.id = :orderId"
     )
     Optional<OrderItem> findItemByUserAndId(
             @Param("user") User user,

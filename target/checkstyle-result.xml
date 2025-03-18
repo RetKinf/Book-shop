@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="9.3">
+<file name="C:\Users\RetKi\IdeaProjects\Book-shop\src\main\java\com\example\bookshop\controller\AuthController.java">
+</file>
+<file name="C:\Users\RetKi\IdeaProjects\Book-shop\src\main\java\com\example\bookshop\controller\BookController.java">
+</file>
+<file name="C:\Users\RetKi\IdeaProjects\Book-shop\src\main\java\com\example\bookshop\controller\CartController.java">
+</file>
+<file name="C:\Users\RetKi\IdeaProjects\Book-shop\src\main\java\com\example\bookshop\controller\CategoryController.java">
+</file>
+<file name="C:\Users\RetKi\IdeaProjects\Book-shop\src\main\java\com\example\bookshop\controller\OrderController.java">
+</file>
+<file name="C:\Users\RetKi\IdeaProjects\Book-shop\src\main\java\com\example\bookshop\dto\book\BookDto.java">
+</file>
+<file name="C:\Users\RetKi\IdeaProjects\Book-shop\src\main\java\com\example\bookshop\dto\book\CreateBookRequestDto.java">
+</file>
+<file name="C:\Users\RetKi\IdeaProjects\Book-shop\src\main\java\com\example\bookshop\dto\category\CategoryDto.java">
+</file>
+<file name="C:\Users\RetKi\IdeaProjects\Book-shop\src\main\java\com\example\bookshop\model\Book.java">
+</file>
+<file name="C:\Users\RetKi\IdeaProjects\Book-shop\src\main\java\com\example\bookshop\service\CategoryService.java">
+</file>
+<file name="C:\Users\RetKi\IdeaProjects\Book-shop\src\main\java\com\example\bookshop\service\impl\CategoryServiceImpl.java">
+</file>
+<file name="C:\Users\RetKi\IdeaProjects\Book-shop\src\test\java\com\example\bookshop\config\CustomMySqlContainer.java">
+</file>
+<file name="C:\Users\RetKi\IdeaProjects\Book-shop\src\test\java\com\example\bookshop\controller\BookControllerTest.java">
+</file>
+<file name="C:\Users\RetKi\IdeaProjects\Book-shop\src\test\java\com\example\bookshop\controller\CategoryControllerTest.java">
+</file>
+<file name="C:\Users\RetKi\IdeaProjects\Book-shop\src\test\java\com\example\bookshop\repository\BookRepositoryTest.java">
+</file>
+<file name="C:\Users\RetKi\IdeaProjects\Book-shop\src\test\java\com\example\bookshop\service\BookServiceTest.java">
+</file>
+<file name="C:\Users\RetKi\IdeaProjects\Book-shop\src\test\java\com\example\bookshop\service\CategoryServiceTest.java">
+</file>
+<file name="C:\Users\RetKi\IdeaProjects\Book-shop\src\test\resources\application.properties">
+</file>
+</checkstyle>
